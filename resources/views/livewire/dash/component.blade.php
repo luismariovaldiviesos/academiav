@@ -18,7 +18,7 @@
 
         <div class="col-span-12 lg:col-span-6">
             <div class="intro-y box">
-                <h4 class="p-3 text-center text-theme-1 font-bold">TOP 5 MAS VENDIDOS</h4>
+                <h4 class="p-3 text-center text-theme-1 font-bold">TOP 5 MEJORES JUGADROES</h4>
                 <div id="chartTop5">
                 </div>
             </div>
@@ -26,7 +26,7 @@
 
         <div class="col-span-12 lg:col-span-6">
             <div class="intro-y box ">
-                <h4 class="p-3 text-center text-theme-1 font-bold">VENTAS DE LA SEMANA</h4>
+                <h4 class="p-3 text-center text-theme-1 font-bold">CUENTAS VENCIDAS  </h4>
                 <div id="chartArea">
                 </div>
             </div>

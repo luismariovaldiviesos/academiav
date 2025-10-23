@@ -50,6 +50,13 @@
 
         <div class="side-nav__devider my-6"></div>
 
+            <li>
+            <a href="{{ route('alumnos') }}" class="side-menu">
+                <div class="side-menu__icon"> <i data-feather="users"></i> </div>
+                <div class="side-menu__title"> ALUMNOS  </div>
+            </a>
+        </li>
+
         <li>
             <a href="{{ route('customers') }}" class="side-menu">
                 <div class="side-menu__icon"> <i data-feather="users"></i> </div>

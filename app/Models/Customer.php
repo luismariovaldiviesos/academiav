@@ -10,13 +10,17 @@ class Customer extends Model
     use HasFactory;
     protected $fillable = ['businame','typeidenti','valueidenti','address','email','phone','notes'];
 
+    // Clave primaria personalizada
+    protected $primaryKey = 'id_alumno';
+
+      public $incrementing = false;
 
 
 
-    //relaciones
-    public function  orders()
+     // Relación inversa
+    public function alumno()
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsTo(Alumno::class, 'id_alumno', 'id');
     }
 
     public static function rules($id){ // stattic para acceder sin tener que instanciar la clase
