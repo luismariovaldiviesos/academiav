@@ -30,6 +30,10 @@
                                 @forelse ($alumnos as $alumno )
                                     <tr class=" dark:bg-dark-1 {{ $loop->index % 2> 0 ? 'bg-gray-200' : '' }}">
 
+                                         {{-- <td>
+                                            <img src="{{ $alumno->img }}" data-action="zoom" alt="img-category" width="100">
+                                        </td> --}}
+
                                         <td class="dark:border-dark-5">
                                             <h6 class="mb-1 font-medium">{{ $alumno->nombre }}</h6>
                                         </td>

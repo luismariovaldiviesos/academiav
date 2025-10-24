@@ -50,5 +50,49 @@ class Alumno extends Model
         return $this->hasOne(Customer::class, 'alumno_id', 'id');
     }
 
+    public function image()
+    {
+        //Este patrón a menudo se denomina patrón de objeto nulo y puede ayudar a eliminar las comprobaciones condicionales en su código.
+        return  $this->morphOne(Image::class, 'model')->withDefault();
+    }
+
+    //  // ultima imagen que se relaciono al alumno
+    // public function lastestImage()
+    // {
+    //     return $this->morphOne(Image::class, 'model')->latestOfMany();
+    // }
+
+    //accesors
+    // public function getImgAttribute()
+    // {
+    //     if(count($this->images))
+    //     {
+    //         if (file_exists('storage/alumnos/'. $this->images->last()->file))
+
+    //             return "storage/alumnos/". $this->images->last()->file;
+    //             else
+    //         return "storage/default_avatar.JPG";  // si el producto tiene imagen pero fisiscamente no se encuentra
+
+    //     } else{
+    //         return 'storage/noimg.png'; // si el producto no  tiene imagen relacionada
+
+    //     }
+    // }
+
+     // accessors && mutators
+    public function getImgAttribute()
+    {
+        $img = $this->image->file;
+
+        if ($img != null) {
+            if (file_exists('storage/alumnos/' . $img))
+                return 'storage/alumnos/' . $img;
+            else
+            return "storage/default_avatar.JPG";  // si el producto tiene imagen pero fisiscamente no se encuentra
+        }
+
+        return 'storage/noimg.png'; // si el producto no  tiene imagen relacionada
+    }
+
 
 }
