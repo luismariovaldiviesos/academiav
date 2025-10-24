@@ -9,7 +9,7 @@
         <meta name="description" content="Sistema FAstFooD">
         <meta name="keywords" content="ventas,sistema,web,envio,comida,restaurante,ordenes,express,pantalla,táctil">
         <meta name="author" content="khipu.com">
-        <title>Sistema de Ventas</title>
+        <title>Academia AV </title>
         <!-- BEGIN: CSS Assets-->
         <link rel="stylesheet" href="{{ asset('dist/css/app.css')}}" />
         <link rel="stylesheet" href="{{ asset('css/all.css')}}" />
