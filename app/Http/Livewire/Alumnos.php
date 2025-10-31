@@ -5,39 +5,37 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 Use App\Models\Alumno;
+use Livewire\WithFileUploads;
 
 class Alumnos extends Component
 {
 
-    use WithPagination;
+    use WithPagination , WithFileUploads;
 
-     public $ci = "", $nombre ="", $fecha_nacimiento ="",$colegio ="",$genero ="";
-     public $action = 'Listado', $componentName = 'ALUMNOS', $search = '', $form = false;
+
+     public $action = 'Listado', $componentName = 'ALUMNOS', $search = '', $form = false, $selected_id = 0;
     private $pagination =10;
     protected $paginationTheme = 'tailwind';
 
 
-    //para los tabs
-    public $tabPerfil = true, $tabFichaDep = false, $tabLesiones = false, $tabRepresentante =false, $tabMatricula=false,
-            $tabFinanzas = false;
+    //variables para perfil
+    public $ci, $nombres, $fecha_nacimiento, $colegio, $genero, $foto;
 
 
 
-             public $pcs, $laptops ,$monitores, $teclados, $mouses, $telefonos, $scanners, $impresoras;
-    public $totpcs, $totlaptops ,$totmonitores, $totteclados, $totmouses, $tottelefonos, $totscanners, $totimpresoras;
 
 
       public function render()
     {
         if (strlen($this->search)> 0) {
-            $alumnos = Alumno::where('nombre','like',"%{$this->search}%")
+            $alumnos = Alumno::where('nombres','like',"%{$this->search}%")
             ->orWhere('ci','like',"%{$this->search}%")
-            ->orderBy('nombre', 'asc')
+            ->orderBy('nombres', 'asc')
             ->paginate($this->pagination);
         }
         else
         {
-            $alumnos = Alumno::orderBy('nombre', 'asc')
+            $alumnos = Alumno::orderBy('nombres', 'asc')
             ->paginate($this->pagination);
         }
         return view('livewire.alumnos.component',[
@@ -75,124 +73,52 @@ class Alumnos extends Component
 
         dd("editar", $alumno->nombre);
 
-        // $this->selected_id = $customer->id;
-        // $this->businame = $customer->businame;
-        // $this->typeidenti = $customer->typeidenti;
-        // $this->valueidenti = $customer->valueidenti;
-        // $this->address = $customer->address;
-        // $this->email = $customer->email;
-        // $this->phone = $customer->phone;
-        // $this->notes = $customer->notes;
-        // $this->form = true;
 
     }
-
-    //  public function setTabActive($tabName)
-    // {
-    //     if ($tabName == 'tabPerfil') {
-    //         $this->tabPerfil = true;
-    //         $this->tabFichaDep = false;
-    //         $this->tabLesiones = false;
-    //         $this->tabRepresentante = false;
-    //         $this->tabMatricula = false;
-    //         $this->tabFinanzas = false;
-
-    //     }
-    //     if ($tabName == 'tabFichaDep') {
-    //         $this->tabPerfil = false;
-    //         $this->tabFichaDep = true;
-    //         $this->tabLesiones = false;
-    //         $this->tabRepresentante = false;
-    //         $this->tabMatricula = false;
-    //         $this->tabFinanzas = false;
-
-    //     }
-    //     if ($tabName == 'tabLesiones') {
-    //         $this->tabPerfil = false;
-    //         $this->tabFichaDep = false;
-    //         $this->tabLesiones = true;
-    //         $this->tabRepresentante = false;
-    //         $this->tabMatricula = false;
-    //         $this->tabFinanzas = false;
-
-    //     }
-    //     if ($tabName == 'tabRepresentante') {
-    //         $this->tabPerfil = false;
-    //         $this->tabFichaDep = false;
-    //         $this->tabLesiones = false;
-    //         $this->tabRepresentante = true;
-    //         $this->tabMatricula = false;
-    //         $this->tabFinanzas = false;
-
-    //     }
-    //     if ($tabName == 'tabMatricula') {
-    //         $this->tabPerfil = false;
-    //         $this->tabFichaDep = false;
-    //         $this->tabLesiones = false;
-    //         $this->tabRepresentante = false;
-    //         $this->tabMatricula = true;
-    //         $this->tabFinanzas = false;
-
-    //         $this->tabImpresoras = false;
-    //     }
-    //     if ($tabName == 'tabFinanzas') {
-    //         $this->tabPerfil = false;
-    //         $this->tabFichaDep = false;
-    //         $this->tabLesiones = false;
-    //         $this->tabRepresentante = false;
-    //         $this->tabMatricula = false;
-    //         $this->tabFinanzas = true;
-
-    //     }
-
-
-
-    // }
-
     // --- pestaña activa (opcional si luego entanglas con Alpine) ---
-public string $tab = 'perfil';
+    public string $tab = 'perfil';
 
-// --- MÉTODOS QUE LLAMAN LAS PESTAÑAS (solo dd para verificar flujo) ---
-public function savePerfil()
-{
-    dd('aquí grabamos PERFIL');
-}
+    // --- MÉTODOS QUE LLAMAN LAS PESTAÑAS (solo dd para verificar flujo) ---
+    public function savePerfil()
+    {
+        $this->validate(Alumno::rules($this->selected_id), Alumno::$messages);
+        dd('aquí grabamos PERFIL');
+    }
 
-public function saveFicha()
-{
-    dd('aquí grabamos FICHA TÉCNICA / FICHA DEPORTIVA');
-}
+    public function saveFicha()
+    {
+        dd('aquí grabamos FICHA TÉCNICA / FICHA DEPORTIVA');
+    }
 
-public function addLesion()
-{
-    dd('aquí ABRIMOS MODAL para AGREGAR LESIÓN');
-}
+    public function addLesion()
+    {
+        dd('aquí ABRIMOS MODAL para AGREGAR LESIÓN');
+    }
 
-public function saveRepresentante()
-{
-    dd('aquí grabamos REPRESENTANTE');
-}
+    public function saveRepresentante()
+    {
+        dd('aquí grabamos REPRESENTANTE');
+    }
 
-public function saveMatricula()
-{
-    dd('aquí grabamos MATRÍCULA');
-}
+    public function saveMatricula()
+    {
+        dd('aquí grabamos MATRÍCULA');
+    }
 
-public function registrarPago()
-{
-    dd('aquí REGISTRAMOS un PAGO');
-}
+    public function registrarPago()
+    {
+        dd('aquí REGISTRAMOS un PAGO');
+    }
 
-public function generarCuotaMes()
-{
-    dd('aquí GENERAMOS la CUOTA del mes');
-}
+    public function generarCuotaMes()
+    {
+        dd('aquí GENERAMOS la CUOTA del mes');
+    }
 
-// Helper opcional por si quieres cambiar de tab desde Livewire
-public function irA($tab)
-{
-    $this->tab = $tab;
-}
+    public function saveEvaluacion()
+    {
+        dd('aquí guardamos EVALUACIÓN (cabecera + métricas)');
+    }
 
 
 

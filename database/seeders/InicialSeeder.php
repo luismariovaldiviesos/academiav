@@ -19,7 +19,7 @@ class InicialSeeder extends Seeder
     {
         $alumno = Alumno::create([
             'ci' => '0999999999',
-            'nombre' => 'Juan Perez',
+            'nombres' => 'Juan Perez',
             'fecha_nacimiento' => '2000-01-01',
             'colegio' => 'Colegio Nacional',
             'genero' => 'X',

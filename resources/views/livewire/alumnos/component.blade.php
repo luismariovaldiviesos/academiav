@@ -35,7 +35,7 @@
                                         </td> --}}
 
                                         <td class="dark:border-dark-5">
-                                            <h6 class="mb-1 font-medium">{{ $alumno->nombre }}</h6>
+                                            <h6 class="mb-1 font-medium">{{ $alumno->nombres }}</h6>
                                         </td>
                                         <td class="dark:border-dark-5">
                                             <h6 class="mb-1 font-medium">{{ $alumno->ci }}</h6>

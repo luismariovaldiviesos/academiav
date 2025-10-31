@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('alumnos', function (Blueprint $table) {
             $table->id();
              $table->string('ci', 40)->nullable()->unique(); // opcional
-            $table->string('nombre', 120);
+            $table->string('nombres', 120);
             $table->date('fecha_nacimiento');
             $table->string('colegio', 120)->nullable();
             $table->enum('genero', ['M','F','X']);
             $table->timestamps();
 
-            $table->index(['nombre']);
+            $table->index(['nombres']);
         });
     }
 

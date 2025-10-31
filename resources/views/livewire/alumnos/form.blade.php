@@ -10,6 +10,8 @@
             <button class="btn px-6 py-2" :class="{ 'btn-primary': tab==='rep' }"     @click="tab='rep'">Representante</button>
             <button class="btn px-6 py-2" :class="{ 'btn-primary': tab==='matri' }"   @click="tab='matri'">Matrícula</button>
             <button class="btn px-6 py-2" :class="{ 'btn-primary': tab==='fin' }"     @click="tab='fin'">Finanzas</button>
+            <button class="btn px-6 py-2" :class="{ 'btn-primary': tab==='eval' }" @click="tab='eval'">Evaluaciones</button>
+
         </div>
     </div>
 
@@ -46,6 +48,11 @@
             <div class="intro-y box" x-show="tab==='fin'" x-cloak>
                 @include('livewire.alumnos.tabs.finanzas')
             </div>
+            {{-- EVALUACIONES --}}
+            <div class="intro-y box" x-show="tab==='eval'" x-cloak>
+                @include('livewire.alumnos.tabs.evaluaciones')
+            </div>
+
         </div>
 
         {{-- DERECHA: SOLO FOTO + RESUMEN (sin input de foto) --}}

@@ -15,16 +15,6 @@
         <input type="text" class="form-control h-12 text-lg" placeholder="S / M / L / XL">
     </div>
 
-    <div class="col-span-12 md:col-span-3">
-        <label class="form-label text-base">Estatura (m)</label>
-        <input type="number" step="0.01" class="form-control h-12 text-lg" placeholder="1.60">
-    </div>
-
-    <div class="col-span-12 md:col-span-3">
-        <label class="form-label text-base">Peso (kg)</label>
-        <input type="number" step="0.1" class="form-control h-12 text-lg" placeholder="50.0">
-    </div>
-
     <div class="col-span-12 md:col-span-6">
         <label class="form-label text-base">Posición principal</label>
         <input type="text" class="form-control h-12 text-lg" placeholder="Delantero / Defensa / Volante / Arquero">
@@ -35,7 +25,7 @@
         <input type="text" class="form-control h-12 text-lg" placeholder="Posición secundaria">
     </div>
 
-    <div class="col-span-12 md:col-span-6">
+    <div class="col-span-12 md:col-span-4">
         <label class="form-label text-base">Lateralidad</label>
         <select class="form-select h-12 text-lg">
             <option value="">Seleccione…</option>
@@ -43,6 +33,15 @@
             <option>Zurdo</option>
             <option>Ambidiestro</option>
         </select>
+    </div>
+    <div class="col-span-12 md:col-span-4">
+        <label class="form-label text-base">Instituto anterior</label>
+        <input type="text" step="0.01" class="form-control h-12 text-lg" placeholder="academia prueba">
+    </div>
+
+    <div class="col-span-12 md:col-span-4">
+        <label class="form-label text-base">Años Jugando</label>
+        <input type="text" step="0.1" class="form-control h-12 text-lg" placeholder="2 años">
     </div>
 
     <div class="col-span-12 flex justify-end">
