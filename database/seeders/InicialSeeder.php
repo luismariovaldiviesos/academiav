@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Customer;
 use App\Models\Setting;
 use App\Models\Alumno;
+use App\Models\FichaDeportiva;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -36,6 +37,20 @@ class InicialSeeder extends Seeder
             'phone' => '999999',
             'notes' => 'consumidor final por defecto'
         ]);
+
+        $fichaDeportiva = FichaDeportiva::create([
+            'alumno_id' => $alumno->id,
+            'datos_camiseta' => 'Camiseta Oficial',
+            'numero_camiseta' => 10,
+            'talla_camiseta' => 'M',
+            'posicion_principal' => 'Delantero',
+            'otra_posicion' => 'Mediocampista',
+            'lateralidad' => 'Diestro',
+            'academia_anterior' => 'Escuela de Fútbol Local',
+            'años_practica' => 5,
+        ]);
+
+
 
 
         Setting::create([

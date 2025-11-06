@@ -6,6 +6,11 @@ use Livewire\Component;
 use Livewire\WithPagination;
 Use App\Models\Alumno;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+use App\Models\Image;
+
 
 class Alumnos extends Component
 {
@@ -66,7 +71,7 @@ class Alumnos extends Component
     {
         $this->resetPage();
         $this->resetValidation();
-        $this->reset('businame','typeidenti','valueidenti','address','email','phone','notes','selected_id','search','form');
+        $this->reset('ci','nombres','fecha_nacimiento','colegio','genero','selected_id','search','form');
     }
 
      public function Edit(Alumno $alumno){
@@ -79,11 +84,64 @@ class Alumnos extends Component
     public string $tab = 'perfil';
 
     // --- MÉTODOS QUE LLAMAN LAS PESTAÑAS (solo dd para verificar flujo) ---
-    public function savePerfil()
-    {
-        $this->validate(Alumno::rules($this->selected_id), Alumno::$messages);
-        dd('aquí grabamos PERFIL');
-    }
+   public function savePerfil()
+{
+    //$this->validate(Alumno::rules($this->selected_id), Alumno::$messages);
+
+    // Asegura formato SQL para DATE
+    $fecha_nacimiento_sql = $this->fecha_nacimiento
+        ? Carbon::parse($this->fecha_nacimiento)->format('Y-m-d')
+        : null;
+
+    DB::transaction(function () use ($fecha_nacimiento_sql) {
+
+        // ¡OJO! updateOrCreate tiene SOLO 2 arrays: [condiciones], [valores]
+        $alumno = Alumno::updateOrCreate(
+            ['id' => $this->selected_id ?: null],
+            [
+                // Ajusta el nombre del campo según tu BD: ¿'nombre' o 'nombres'?
+                'ci'               => $this->ci,
+                'nombres'          => $this->nombres,          // <-- si tu columna es 'nombre', cambia aquí a 'nombre'
+                'fecha_nacimiento' => $fecha_nacimiento_sql,   // Y-m-d
+                'colegio'          => $this->colegio,
+                'genero'           => $this->genero,
+            ]
+        );
+       // dd('aca llegamos', $alumno);
+        // Guardar/actualizar imagen (opcional)
+        if (!empty($this->foto)) {
+            // Borrar archivo anterior si existe
+            $oldFile = $alumno->image?->file;
+            if ($oldFile && Storage::exists('public/alumnos/'.$oldFile)) {
+                Storage::delete('public/alumnos/'.$oldFile);
+            }
+
+            // Subir nueva
+            $customFileName = uniqid() . '_.' . $this->foto->extension();
+            $this->foto->storeAs('public/alumnos', $customFileName);
+
+            // Borrar relación previa (si usas el patrón que mostraste)
+            $alumno->image()?->delete();
+
+            // Crear registro en images
+            $img = Image::create([
+                'model_id'   => $alumno->id,
+                'model_type' => 'App\Models\Alumno',  // ¡IMPORTANTE!
+                'file'       => $customFileName,
+            ]);
+
+            // Asociar
+            $alumno->image()->save($img);
+        }
+
+        // Actualiza selected_id tras crear
+        $this->selected_id = $alumno->id;
+    });
+
+    // Feedback y reset si quieres
+    $this->noty($this->selected_id ? 'Perfil alumno Registrado' : 'Perfil alumno  Actualizado', 'noty', false, 'close-modal');
+    // $this->resetUI(); // si necesitas
+}
 
     public function saveFicha()
     {

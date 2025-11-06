@@ -36,8 +36,8 @@
         </div>
 
         <div class="col-span-12 md:col-span-6">
-            <label class="form-label text-base" wire:model='genero'>Género</label>
-            <select class="form-select h-12 text-lg">
+            <label class="form-label text-base" >Género</label>
+            <select wire:model='genero' class="form-select h-12 text-lg">
                 <option value="">Seleccione…</option>
                 <option value="M">Masculino</option>
                 <option value="F">Femenino</option>

@@ -63,30 +63,9 @@ class Alumno extends Model
         return  $this->morphOne(Image::class, 'model')->withDefault();
     }
 
-    //  // ultima imagen que se relaciono al alumno
-    // public function lastestImage()
-    // {
-    //     return $this->morphOne(Image::class, 'model')->latestOfMany();
-    // }
 
-    //accesors
-    // public function getImgAttribute()
-    // {
-    //     if(count($this->images))
-    //     {
-    //         if (file_exists('storage/alumnos/'. $this->images->last()->file))
 
-    //             return "storage/alumnos/". $this->images->last()->file;
-    //             else
-    //         return "storage/default_avatar.JPG";  // si el producto tiene imagen pero fisiscamente no se encuentra
-
-    //     } else{
-    //         return 'storage/noimg.png'; // si el producto no  tiene imagen relacionada
-
-    //     }
-    // }
-
-     // accessors && mutators
+    // Accessor para usar en blade: {{ $alumno->img }}
     public function getImgAttribute()
     {
         $img = $this->image->file;
@@ -99,6 +78,24 @@ class Alumno extends Model
         }
 
         return 'storage/noimg.png'; // si el producto no  tiene imagen relacionada
+    }
+
+
+     protected static function booted()
+    {
+        static::deleting(function (Alumno $alumno) {
+            $file = $alumno->image?->file;
+            if ($file && Storage::exists('public/alumnos/'.$file)) {
+                Storage::delete('public/alumnos/'.$file);
+            }
+            $alumno->image()?->delete();
+        });
+    }
+
+
+    public function fichaDeportiva()
+    {
+        return $this->hasOne(FichaDeportiva::class);
     }
 
 
