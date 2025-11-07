@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 Use App\Models\Alumno;
+Use App\Models\FichaDeportiva  as FichaDeportiva;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -25,6 +26,12 @@ class Alumnos extends Component
 
     //variables para perfil
     public $ci, $nombres, $fecha_nacimiento, $colegio, $genero, $foto;
+
+    public string $tab = 'perfil';
+
+
+// Campos de la ficha (bindéalos en el form de la pestaña Ficha)
+public $datos_camiseta, $numero_camiseta, $talla_camiseta,  $posicion_principal, $otra_posicion, $lateralidad, $academia_anterior, $años_practica;
 
 
 
@@ -81,71 +88,103 @@ class Alumnos extends Component
 
     }
     // --- pestaña activa (opcional si luego entanglas con Alpine) ---
-    public string $tab = 'perfil';
+   //
 
     // --- MÉTODOS QUE LLAMAN LAS PESTAÑAS (solo dd para verificar flujo) ---
-   public function savePerfil()
-{
-    //$this->validate(Alumno::rules($this->selected_id), Alumno::$messages);
+    public function savePerfil()
+    {
+        $this->validate(Alumno::rules($this->selected_id), Alumno::$messages);
 
-    // Asegura formato SQL para DATE
-    $fecha_nacimiento_sql = $this->fecha_nacimiento
-        ? Carbon::parse($this->fecha_nacimiento)->format('Y-m-d')
-        : null;
+        // Asegura formato SQL para DATE
+        $fecha_nacimiento_sql = $this->fecha_nacimiento
+            ? Carbon::parse($this->fecha_nacimiento)->format('Y-m-d')
+            : null;
 
-    DB::transaction(function () use ($fecha_nacimiento_sql) {
+        DB::transaction(function () use ($fecha_nacimiento_sql) {
 
-        // ¡OJO! updateOrCreate tiene SOLO 2 arrays: [condiciones], [valores]
-        $alumno = Alumno::updateOrCreate(
-            ['id' => $this->selected_id ?: null],
-            [
-                // Ajusta el nombre del campo según tu BD: ¿'nombre' o 'nombres'?
-                'ci'               => $this->ci,
-                'nombres'          => $this->nombres,          // <-- si tu columna es 'nombre', cambia aquí a 'nombre'
-                'fecha_nacimiento' => $fecha_nacimiento_sql,   // Y-m-d
-                'colegio'          => $this->colegio,
-                'genero'           => $this->genero,
-            ]
-        );
-       // dd('aca llegamos', $alumno);
-        // Guardar/actualizar imagen (opcional)
-        if (!empty($this->foto)) {
-            // Borrar archivo anterior si existe
-            $oldFile = $alumno->image?->file;
-            if ($oldFile && Storage::exists('public/alumnos/'.$oldFile)) {
-                Storage::delete('public/alumnos/'.$oldFile);
+            // ¡OJO! updateOrCreate tiene SOLO 2 arrays: [condiciones], [valores]
+            $alumno = Alumno::updateOrCreate(
+                ['id' => $this->selected_id ?: null],
+                [
+                    // Ajusta el nombre del campo según tu BD: ¿'nombre' o 'nombres'?
+                    'ci'               => $this->ci,
+                    'nombres'          => $this->nombres,          // <-- si tu columna es 'nombre', cambia aquí a 'nombre'
+                    'fecha_nacimiento' => $fecha_nacimiento_sql,   // Y-m-d
+                    'colegio'          => $this->colegio,
+                    'genero'           => $this->genero,
+                ]
+            );
+        // dd('aca llegamos', $alumno);
+            // Guardar/actualizar imagen (opcional)
+            if (!empty($this->foto)) {
+                // Borrar archivo anterior si existe
+                $oldFile = $alumno->image?->file;
+                if ($oldFile && Storage::exists('public/alumnos/'.$oldFile)) {
+                    Storage::delete('public/alumnos/'.$oldFile);
+                }
+
+                // Subir nueva
+                $customFileName = uniqid() . '_.' . $this->foto->extension();
+                $this->foto->storeAs('public/alumnos', $customFileName);
+
+                // Borrar relación previa (si usas el patrón que mostraste)
+                $alumno->image()?->delete();
+
+                // Crear registro en images
+                $img = Image::create([
+                    'model_id'   => $alumno->id,
+                    'model_type' => 'App\Models\Alumno',  // ¡IMPORTANTE!
+                    'file'       => $customFileName,
+                ]);
+
+                // Asociar
+                $alumno->image()->save($img);
             }
 
-            // Subir nueva
-            $customFileName = uniqid() . '_.' . $this->foto->extension();
-            $this->foto->storeAs('public/alumnos', $customFileName);
+            // Actualiza selected_id tras crear
+            $this->selected_id = $alumno->id;
+        });
 
-            // Borrar relación previa (si usas el patrón que mostraste)
-            $alumno->image()?->delete();
+        // Feedback y reset si quieres
+        $this->noty($this->selected_id ? 'Perfil alumno Registrado' : 'Perfil alumno  Actualizado', 'noty', false, 'close-modal');
+        // $this->resetUI(); // si necesitas
+       $this->tab = 'ficha'; // avanzar a Ficha
+    }
 
-            // Crear registro en images
-            $img = Image::create([
-                'model_id'   => $alumno->id,
-                'model_type' => 'App\Models\Alumno',  // ¡IMPORTANTE!
-                'file'       => $customFileName,
-            ]);
 
-            // Asociar
-            $alumno->image()->save($img);
-        }
-
-        // Actualiza selected_id tras crear
-        $this->selected_id = $alumno->id;
-    });
-
-    // Feedback y reset si quieres
-    $this->noty($this->selected_id ? 'Perfil alumno Registrado' : 'Perfil alumno  Actualizado', 'noty', false, 'close-modal');
-    // $this->resetUI(); // si necesitas
-}
 
     public function saveFicha()
     {
-        dd('aquí grabamos FICHA TÉCNICA / FICHA DEPORTIVA');
+        // Validación
+
+        $alumno =  Alumno::find($this->selected_id);
+        //dd($this->datos_camiseta, $this->numero_camiseta, $this->talla_camiseta,  $this->posicion_principal, $this->otra_posicion, $this->lateralidad, $this->academia_anterior, $this->años_practica);
+        if (!$alumno) {
+            //$this->dispatch('noty', msg: 'Primero guarda el PERFIL del alumno.', type: 'error');
+             $this->noty('Primero guarda el PERFIL del alumno.', 'noty', false, 'close-modal');
+            $this->tab = 'perfil';
+            return;
+        }
+        // Crear o actualizar ficha deportiva
+        //$this->validate(FichaDeportiva::rules(), FichaDeportiva::$messages);
+        $this->validate(FichaDeportiva::rules(), FichaDeportiva::$messages);
+        $alumno->fichaDeportiva()->updateOrCreate(
+            [],
+            [
+                'datos_camiseta'     => $this->datos_camiseta,
+                'numero_camiseta'    => $this->numero_camiseta,
+                'talla_camiseta'     => $this->talla_camiseta,
+                'posicion_principal' => $this->posicion_principal,
+                'otra_posicion'      => $this->otra_posicion,
+                'lateralidad'        => $this->lateralidad,
+                'academia_anterior'  => $this->academia_anterior,
+                'años_practica'      => $this->años_practica,
+            ]
+        );
+        // Notificación + AVANZAR pestaña
+        $this->noty('Ficha deportiva guardada', 'noty', false, 'close-modal');
+        // $this->resetUI(); // si necesitas
+        $this->tab = 'lesiones'; // <-- Avanza automáticamente a la siguiente
     }
 
     public function addLesion()

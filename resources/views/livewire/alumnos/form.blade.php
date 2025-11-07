@@ -1,5 +1,5 @@
 {{-- FORM con pestañas (sin datos). Lógica en Livewire\Alumno, métodos usan dd(). --}}
-<div x-data="{ tab: 'perfil' }" class="content space-y-6">
+<div x-data="{ tab: @entangle('tab') }" class="content space-y-6">
 
     {{-- BARRA DE PESTAÑAS --}}
     <div class="intro-y box p-6">
