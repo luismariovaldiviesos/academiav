@@ -215,7 +215,7 @@ class Alumnos extends Component
 
     public function addLesion()
     {
-        dd($this->alumno);
+        //dd($this->alumno);
         $this->validate(Lesion::rules(), Lesion::$messages);
         if(!$alumno ){
             $this->noty('Primero guarda la ficha deportiva del alumno.', 'noty', false, 'close-modal');

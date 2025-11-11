@@ -8,17 +8,17 @@
         <div class="w-full mb-10">
             <div class="mx-auto max-w-[280px]">
                 <div class="bg-slate-50 rounded-lg overflow-hidden shadow-sm border border-slate-200">
-                    <div class="flex items-center justify-center aspect-[3/4]">
-                        @if($alumno->img)
-                            <img src="{{ $alumno->img }}" data-action="zoom" alt="Foto del estudiante"
-                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                        @else
-                            <div class="flex flex-col items-center justify-center text-slate-400 p-6">
-                                <i class="w-16 h-16 mb-3" data-lucide="user"></i>
-                                <span class="text-sm font-medium">Sin imagen</span>
-                            </div>
-                        @endif
-                    </div>
+                  <div class="flex items-center justify-center aspect-[3/4]">
+    @if(isset($alumno) && $alumno->img)
+        <img src="{{ $alumno->img }}" data-action="zoom" alt="Foto del estudiante"
+             class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+    @else
+        <div class="flex flex-col items-center justify-center text-slate-400 p-6">
+            <i class="w-16 h-16 mb-3" data-lucide="user"></i>
+            <span class="text-sm font-medium">Sin imagen</span>
+        </div>
+    @endif
+</div>
                 </div>
             </div>
         </div>
