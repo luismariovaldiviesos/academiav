@@ -3,25 +3,25 @@
         {{-- fecha lesión (mes y año) --}}
         <div class="col-span-12 md:col-span-3">
             <label class="form-label text-base">Fecha de lesión</label>
-            <input type="month" class="form-control h-12 text-lg">
+            <input wire:model.defer= 'lesion_fecha' type="month" class="form-control h-12 text-lg">
         </div>
 
         {{-- lesión --}}
         <div class="col-span-12 md:col-span-3">
             <label class="form-label text-base">Lesión</label>
-            <input type="text" class="form-control h-12 text-lg" placeholder="Esguince / Fractura / etc.">
+            <input type="text" wire:model.defer='lesion' class="form-control h-12 text-lg" placeholder="Esguince / Fractura / etc.">
         </div>
 
         {{-- parte afectada --}}
         <div class="col-span-12 md:col-span-3">
             <label class="form-label text-base">Parte afectada</label>
-            <input type="text" class="form-control h-12 text-lg" placeholder="Rodilla / Tobillo / Hombro">
+            <input type="text" wire:model.defer='parte' class="form-control h-12 text-lg" placeholder="Rodilla / Tobillo / Hombro">
         </div>
 
         {{-- gravedad --}}
         <div class="col-span-12 md:col-span-3">
             <label class="form-label text-base">Gravedad</label>
-            <select class="form-select h-12 text-lg">
+            <select wire:model.defer ="gravedad" class="form-select h-12 text-lg">
                 <option value="">Seleccione…</option>
                 <option>Leve</option>
                 <option>Moderada</option>
@@ -32,7 +32,7 @@
         {{-- estado --}}
         <div class="col-span-12 md:col-span-3">
             <label class="form-label text-base">Estado</label>
-            <select class="form-select h-12 text-lg">
+            <select wire:model.defer ='estado' class="form-select h-12 text-lg">
                 <option value="">Seleccione…</option>
                 <option>Activa</option>
                 <option>Alta</option>
@@ -43,7 +43,7 @@
         {{-- notas --}}
         <div class="col-span-12 md:col-span-9">
             <label class="form-label text-base">Notas</label>
-            <input type="text" class="form-control h-12 text-lg" placeholder="Observaciones / indicaciones médicas">
+            <input type="text" wire:model.defer='notas' class="form-control h-12 text-lg" placeholder="Observaciones / indicaciones médicas">
         </div>
 
         <div class="col-span-12 flex justify-end">

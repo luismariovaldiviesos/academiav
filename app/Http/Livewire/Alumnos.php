@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use App\Models\Image;
+use App\Models\Lesion;
 
 
 class Alumnos extends Component
@@ -27,14 +28,20 @@ class Alumnos extends Component
     //variables para perfil
     public $ci, $nombres, $fecha_nacimiento, $colegio, $genero, $foto;
 
+    //alumno para todas las fichas
+    public $alumno;
+
     public string $tab = 'perfil';
 
 
-// Campos de la ficha (bindéalos en el form de la pestaña Ficha)
-public $datos_camiseta, $numero_camiseta, $talla_camiseta,  $posicion_principal, $otra_posicion, $lateralidad, $academia_anterior, $años_practica;
+    // Campos de la ficha (bindéalos en el form de la pestaña Ficha)
+    public $datos_camiseta, $numero_camiseta, $talla_camiseta,  $posicion_principal, $otra_posicion, $lateralidad, $academia_anterior, $años_practica;
 
+    // lesiones
+    public $alumno_id,  $lesion_fecha, $lesion, $parte, $gravedad, $estado, $notas;
 
-
+    // Para el listado (historial) en la tabla
+    public $lesionesList = []; // array para mostrar rápidamente tras guardar
 
 
       public function render()
@@ -83,7 +90,25 @@ public $datos_camiseta, $numero_camiseta, $talla_camiseta,  $posicion_principal,
 
      public function Edit(Alumno $alumno){
 
-        dd("editar", $alumno->nombre);
+        $this->alumno = $alumno;
+        $this->selected_id = $alumno->id;
+        $this->ci = $alumno->ci;
+        $this->nombres = $alumno->nombres;
+        $this->fecha_nacimiento = $alumno->fecha_nacimiento;
+        $this->colegio = $alumno->colegio;
+        $this->genero = $alumno->genero;
+        //ficha
+        $this->datos_camiseta = $alumno->fichaDeportiva?->datos_camiseta;
+        $this->numero_camiseta = $alumno->fichaDeportiva?->numero_camiseta;
+        $this->talla_camiseta = $alumno->fichaDeportiva?->talla_camiseta;
+        $this->posicion_principal = $alumno->fichaDeportiva?->posicion_principal;
+        $this->otra_posicion = $alumno->fichaDeportiva?->otra_posicion;
+        $this->lateralidad = $alumno->fichaDeportiva?->lateralidad;
+        $this->academia_anterior = $alumno->fichaDeportiva?->academia_anterior;
+        $this->años_practica = $alumno->fichaDeportiva?->años_practica;
+
+        $this->action = 'Editar';
+        $this->form = true;
 
 
     }
@@ -185,11 +210,18 @@ public $datos_camiseta, $numero_camiseta, $talla_camiseta,  $posicion_principal,
         $this->noty('Ficha deportiva guardada', 'noty', false, 'close-modal');
         // $this->resetUI(); // si necesitas
         $this->tab = 'lesiones'; // <-- Avanza automáticamente a la siguiente
+        $this->alumno = $alumno; // asigna el alumno cargado
     }
 
     public function addLesion()
     {
-        dd('aquí ABRIMOS MODAL para AGREGAR LESIÓN');
+        dd($this->alumno);
+        $this->validate(Lesion::rules(), Lesion::$messages);
+        if(!$alumno ){
+            $this->noty('Primero guarda la ficha deportiva del alumno.', 'noty', false, 'close-modal');
+            $this->tab = 'ficha';
+            return;
+        }
     }
 
     public function saveRepresentante()

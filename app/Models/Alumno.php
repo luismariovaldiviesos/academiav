@@ -98,5 +98,10 @@ class Alumno extends Model
         return $this->hasOne(FichaDeportiva::class);
     }
 
+    public function lesiones()
+    {
+        return $this->hasMany(Lesion::class);
+    }
+
 
 }
