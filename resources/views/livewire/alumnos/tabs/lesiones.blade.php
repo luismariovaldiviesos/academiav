@@ -3,19 +3,28 @@
         {{-- fecha lesión (mes y año) --}}
         <div class="col-span-12 md:col-span-3">
             <label class="form-label text-base">Fecha de lesión</label>
-            <input wire:model.defer= 'lesion_fecha' type="month" class="form-control h-12 text-lg">
+            <input wire:model.defer= 'fecha' type="month" class="form-control h-12 text-lg">
+             @error('fecha')
+                    <x-alert msg="{{ $message  }}" />
+         @enderror
         </div>
 
         {{-- lesión --}}
         <div class="col-span-12 md:col-span-3">
             <label class="form-label text-base">Lesión</label>
             <input type="text" wire:model.defer='lesion' class="form-control h-12 text-lg" placeholder="Esguince / Fractura / etc.">
+         @error('lesion')
+                    <x-alert msg="{{ $message  }}" />
+         @enderror
         </div>
 
         {{-- parte afectada --}}
         <div class="col-span-12 md:col-span-3">
             <label class="form-label text-base">Parte afectada</label>
             <input type="text" wire:model.defer='parte' class="form-control h-12 text-lg" placeholder="Rodilla / Tobillo / Hombro">
+        @error('parte')
+                    <x-alert msg="{{ $message  }}" />
+         @enderror
         </div>
 
         {{-- gravedad --}}
@@ -27,6 +36,9 @@
                 <option>Moderada</option>
                 <option>Grave</option>
             </select>
+             @error('gravedad')
+                    <x-alert msg="{{ $message  }}" />
+            @enderror
         </div>
 
         {{-- estado --}}
@@ -38,12 +50,18 @@
                 <option>Alta</option>
                 <option>En rehabilitación</option>
             </select>
+             @error('estado')
+                    <x-alert msg="{{ $message  }}" />
+            @enderror
         </div>
 
         {{-- notas --}}
         <div class="col-span-12 md:col-span-9">
             <label class="form-label text-base">Notas</label>
             <input type="text" wire:model.defer='notas' class="form-control h-12 text-lg" placeholder="Observaciones / indicaciones médicas">
+         @error('notas')
+                    <x-alert msg="{{ $message  }}" />
+         @enderror
         </div>
 
         <div class="col-span-12 flex justify-end">

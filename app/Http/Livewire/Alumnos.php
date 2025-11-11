@@ -38,7 +38,7 @@ class Alumnos extends Component
     public $datos_camiseta, $numero_camiseta, $talla_camiseta,  $posicion_principal, $otra_posicion, $lateralidad, $academia_anterior, $años_practica;
 
     // lesiones
-    public $alumno_id,  $lesion_fecha, $lesion, $parte, $gravedad, $estado, $notas;
+    public $alumno_id,  $fecha, $lesion, $parte, $gravedad, $estado, $notas;
 
     // Para el listado (historial) en la tabla
     public $lesionesList = []; // array para mostrar rápidamente tras guardar
@@ -213,15 +213,22 @@ class Alumnos extends Component
         $this->alumno = $alumno; // asigna el alumno cargado
     }
 
+
+
+
     public function addLesion()
     {
-        //dd($this->alumno);
-        $this->validate(Lesion::rules(), Lesion::$messages);
-        if(!$alumno ){
-            $this->noty('Primero guarda la ficha deportiva del alumno.', 'noty', false, 'close-modal');
-            $this->tab = 'ficha';
-            return;
-        }
+
+        // if($this->alumno == null){
+        //     $this->noty('Primero guarda la ficha deportiva del alumno.', 'noty', false, 'close-modal');
+        //     $this->tab = 'ficha';
+        //     return;
+        // }else{
+        //     $this->validate(Lesion::rules(), Lesion::$messages);
+        // }
+         //$this->validate(Lesion::rules(), Lesion::$messages);
+
+
     }
 
     public function saveRepresentante()

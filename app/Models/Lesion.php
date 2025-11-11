@@ -17,7 +17,6 @@ class Lesion extends Model
 
         return [
             'fecha' => 'required|date',
-            'numero_camiseta'    => 'required|integer|min:0|max:999',
             'lesion'     => 'required',
             'parte' => 'required',
             'gravedad'     => 'required|in:Leve,Moderada,Grave',
