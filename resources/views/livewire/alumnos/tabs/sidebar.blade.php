@@ -8,17 +8,17 @@
         <div class="w-full mb-10">
             <div class="mx-auto max-w-[280px]">
                 <div class="bg-slate-50 rounded-lg overflow-hidden shadow-sm border border-slate-200">
-                  <div class="flex items-center justify-center aspect-[3/4]">
-    @if(isset($alumno) && $alumno->img)
-        <img src="{{ $alumno->img }}" data-action="zoom" alt="Foto del estudiante"
-             class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-    @else
-        <div class="flex flex-col items-center justify-center text-slate-400 p-6">
-            <i class="w-16 h-16 mb-3" data-lucide="user"></i>
-            <span class="text-sm font-medium">Sin imagen</span>
-        </div>
-    @endif
-</div>
+                    <div class="flex items-center justify-center aspect-[3/4]">
+                        @if(isset($alumno) && $alumno->img)
+                            <img src="{{ $alumno->img }}" data-action="zoom" alt="Foto del estudiante"
+                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        @else
+                            <div class="flex flex-col items-center justify-center text-slate-400 p-6">
+                                <i class="w-16 h-16 mb-3" data-lucide="user"></i>
+                                <span class="text-sm font-medium">Sin imagen</span>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,30 +31,30 @@
 
             <div class="space-y-6 text-base">
                 {{-- NOMBRE --}}
-                <div class="flex justify-between items-center py-4 px-5 bg-white rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors shadow-sm">
-                    <div class="flex items-center space-x-4">
+                <div class="flex items-center py-4 px-5 bg-white rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors shadow-sm">
+                    <div class="flex items-center space-x-4 w-64 min-w-64">
                         <i class="w-5 h-5 text-slate-400" data-lucide="user"></i>
                         <span class="text-slate-600 font-medium text-lg">Nombre completo:</span>
                     </div>
-                    <span class="font-semibold text-slate-800 text-right text-lg ml-4">{{ $nombres ?? 'No registra' }}</span>
+                    <span class="font-semibold text-slate-800 text-lg flex-1">{{ $nombres ?? 'No registra' }}</span>
                 </div>
 
                 {{-- CÉDULA --}}
-                <div class="flex justify-between items-center py-4 px-5 bg-white rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors shadow-sm">
-                    <div class="flex items-center space-x-4">
+                <div class="flex items-center py-4 px-5 bg-white rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors shadow-sm">
+                    <div class="flex items-center space-x-4 w-64 min-w-64">
                         <i class="w-5 h-5 text-slate-400" data-lucide="id-card"></i>
                         <span class="text-slate-600 font-medium text-lg">Cédula de identidad:</span>
                     </div>
-                    <span class="font-semibold text-slate-800 text-right text-lg ml-4">{{ $ci ?? 'No registra' }}</span>
+                    <span class="font-semibold text-slate-800 text-lg flex-1">{{ $ci ?? 'No registra' }}</span>
                 </div>
 
                 {{-- FECHA DE NACIMIENTO --}}
-                <div class="flex justify-between items-center py-4 px-5 bg-white rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors shadow-sm">
-                    <div class="flex items-center space-x-4">
+                <div class="flex items-center py-4 px-5 bg-white rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors shadow-sm">
+                    <div class="flex items-center space-x-4 w-64 min-w-64">
                         <i class="w-5 h-5 text-slate-400" data-lucide="calendar"></i>
                         <span class="text-slate-600 font-medium text-lg">Fecha de nacimiento:</span>
                     </div>
-                    <span class="font-semibold text-slate-800 text-right text-lg ml-4">
+                    <span class="font-semibold text-slate-800 text-lg flex-1">
                         @if($fecha_nacimiento)
                             {{ \Carbon\Carbon::parse($fecha_nacimiento)->locale('es')->translatedFormat('j \d\e F \d\e Y') }}
                         @else
@@ -64,12 +64,12 @@
                 </div>
 
                 {{-- CATEGORÍA --}}
-                <div class="flex justify-between items-center py-4 px-5 bg-white rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors shadow-sm">
-                    <div class="flex items-center space-x-4">
+                <div class="flex items-center py-4 px-5 bg-white rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors shadow-sm">
+                    <div class="flex items-center space-x-4 w-64 min-w-64">
                         <i class="w-5 h-5 text-slate-400" data-lucide="layers"></i>
                         <span class="text-slate-600 font-medium text-lg">Categoría:</span>
                     </div>
-                    <span class="font-semibold text-slate-800 text-right text-lg ml-4">{{ $alumno->categoria ?? 'No registrado' }}</span>
+                    <span class="font-semibold text-slate-800 text-lg flex-1">{{ $alumno->categoria ?? 'No registrado' }}</span>
                 </div>
             </div>
         </div>
@@ -82,8 +82,8 @@
 
             <div class="space-y-6 text-base">
                 {{-- ESTADO MATRÍCULA --}}
-                <div class="flex justify-between items-center py-4 px-5 bg-white rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors shadow-sm">
-                    <div class="flex items-center space-x-4">
+                <div class="flex items-center py-4 px-5 bg-white rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors shadow-sm">
+                    <div class="flex items-center space-x-4 w-64 min-w-64">
                         <i class="w-5 h-5 text-slate-400" data-lucide="clipboard-check"></i>
                         <span class="text-slate-600 font-medium text-lg">Estado de matrícula:</span>
                     </div>
@@ -97,21 +97,21 @@
                         ];
                         $colorClass = $estadoColors[strtolower($estado)] ?? $estadoColors['no registrado'];
                     @endphp
-                    <span class="font-semibold px-4 py-2 rounded-full text-base {{ $colorClass }} ml-4">
+                    <span class="font-semibold px-4 py-2 rounded-full text-base {{ $colorClass }} flex-1 text-center max-w-xs">
                         {{ ucfirst($estado) }}
                     </span>
                 </div>
 
                 {{-- COSTO MENSUAL --}}
-                <div class="flex justify-between items-center py-4 px-5 bg-white rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors shadow-sm">
-                    <div class="flex items-center space-x-4">
+                <div class="flex items-center py-4 px-5 bg-white rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors shadow-sm">
+                    <div class="flex items-center space-x-4 w-64 min-w-64">
                         <i class="w-5 h-5 text-slate-400" data-lucide="dollar-sign"></i>
                         <span class="text-slate-600 font-medium text-lg">Costo mensual:</span>
                     </div>
-                    @if(isset($alumno->matricula->costo_mensual) && is_numeric($alumno->matricula->costo_mensual))
-                        <span class="font-bold text-green-600 text-xl ml-4">${{ number_format($alumno->matricula->costo_mensual, 2) }}</span>
+                    @if(isset($alumno) && isset($alumno->matricula->costo_mensual) && is_numeric($alumno->matricula->costo_mensual))
+                        <span class="font-bold text-green-600 text-xl flex-1">${{ number_format($alumno->matricula->costo_mensual, 2) }}</span>
                     @else
-                        <span class="font-medium text-slate-500 text-lg ml-4">No registrado</span>
+                        <span class="font-medium text-slate-500 text-lg flex-1">No registrado</span>
                     @endif
                 </div>
             </div>
