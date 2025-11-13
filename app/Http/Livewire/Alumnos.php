@@ -40,8 +40,16 @@ class Alumnos extends Component
     // lesiones
     public $alumno_id,  $fecha, $lesion, $parte, $gravedad, $estado, $notas;
 
-    // Para el listado (historial) en la tabla
-    public $lesionesList = []; // array para mostrar rápidamente tras guardar
+    public $lesiones;
+
+
+
+    public  function mount(){
+        if($this->selected_id >0 ){
+            $this->cargarLesiones($this->selected_id);
+        }
+    }
+
 
 
       public function render()
@@ -90,6 +98,8 @@ class Alumnos extends Component
 
      public function Edit(Alumno $alumno){
 
+        //dd( $this->lesionesList = $this->loadLesiones());
+
         $this->alumno = $alumno;
         $this->selected_id = $alumno->id;
         $this->ci = $alumno->ci;
@@ -106,6 +116,7 @@ class Alumnos extends Component
         $this->lateralidad = $alumno->fichaDeportiva?->lateralidad;
         $this->academia_anterior = $alumno->fichaDeportiva?->academia_anterior;
         $this->años_practica = $alumno->fichaDeportiva?->años_practica;
+        $this->cargarLesiones($alumno->id);;
 
         $this->action = 'Editar';
         $this->form = true;
@@ -215,18 +226,44 @@ class Alumnos extends Component
 
 
 
+    public function cargarLesiones($id){
+
+        $alumno =  Alumno::find($id);
+        $this->lesiones =   $alumno->lesiones()->orderBy('fecha', 'desc')->get();
+        //dd('llegamos' , $this->lesiones);
+    }
+
+
 
     public function addLesion()
     {
+        //dd($this->alumno, $this->selected_id);
 
-        // if($this->alumno == null){
-        //     $this->noty('Primero guarda la ficha deportiva del alumno.', 'noty', false, 'close-modal');
-        //     $this->tab = 'ficha';
-        //     return;
-        // }else{
-        //     $this->validate(Lesion::rules(), Lesion::$messages);
-        // }
+         if($this->alumno == null){
+             $this->noty('Primero guarda la ficha deportiva del alumno.', 'noty', false, 'close-modal');
+             $this->tab = 'ficha';
+             return;
+         }else{
+             $this->validate(Lesion::rules(), Lesion::$messages);
+               $fecha = Carbon::createFromFormat('Y-m', $this->fecha)->startOfMonth()->format('Y-m-d');
+               //insertar
+                $l = Lesion::create([
+                'alumno_id' => $this->alumno->id,
+                'fecha'     => $fecha,
+                'lesion'    => trim($this->lesion),
+                'parte'     => trim($this->parte) ?: null,
+                'gravedad'  => $this->gravedad ?: null,
+                'estado'    => $this->estado ?: null,
+                'notas'     => trim($this->notas) ?: null,
+            ]);
+             $this->noty('lesion guardada', 'noty', false, 'close-modal');
+             $this->cargarLesiones($this->selected_id);
+
+         }
          //$this->validate(Lesion::rules(), Lesion::$messages);
+
+
+
 
 
     }

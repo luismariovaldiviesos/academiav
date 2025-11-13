@@ -75,16 +75,24 @@
     <div class="overflow-x-auto">
         <table class="table text-base">
             <thead>
-                <tr><th>Fecha</th><th>Lesión</th><th>Parte afectada</th><th>Gravedad</th><th>Estado</th><th>Notas</th><th>Acciones</th></tr>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Lesión</th>
+                    <th>Parte afectada</th>
+                    <th>Gravedad</th>
+                    <th>Estado</th>
+                    <th>Notas</th>
+                    <th>Acciones</th></tr>
             </thead>
             <tbody>
+                 @forelse(($lesiones ?? []) as $lesion)
                 <tr>
-                    <td class="text-slate-400">--</td>
-                    <td class="text-slate-400">--</td>
-                    <td class="text-slate-400">--</td>
-                    <td class="text-slate-400">--</td>
-                    <td class="text-slate-400">--</td>
-                    <td class="text-slate-400">--</td>
+                    <td class="text-slate-400">{{ $lesion->fecha }}</td>
+                    <td class="text-slate-400">{{ $lesion->lesion }}</td>
+                    <td class="text-slate-400">{{ $lesion->parte }}</td>
+                    <td class="text-slate-400">{{ $lesion->gravedad }}</td>
+                    <td class="text-slate-400">{{ $lesion->estado }}</td>
+                    <td class="text-slate-400">{{ $lesion->notas }}</td>
                     <td>
                         <div class="flex gap-2">
                             <button class="btn btn-outline-primary btn-sm">Editar</button>
@@ -92,7 +100,12 @@
                         </div>
                     </td>
                 </tr>
-                {{-- DATA: @foreach lesiones ... @endforeach --}}
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center text-slate-400">El alumno no registra lesiones</td>
+                </tr>
+                @endforelse
+
             </tbody>
         </table>
     </div>
