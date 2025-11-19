@@ -3,6 +3,10 @@ https://www.youtube.com/watch?v=5wFD-CMJurE
 
 excelente
 
+se encesita cargar en foto la fpot del usuario en perfil para que no pida 
+cargar la misma foto si se esta actualizando. 
+O sea si actulizo algu,n dato del usuario me pide si o si foto 
+
 
 
 

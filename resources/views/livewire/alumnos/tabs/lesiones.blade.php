@@ -29,46 +29,64 @@
 
         {{-- gravedad --}}
         <div class="col-span-12 md:col-span-3">
-            <label class="form-label text-base">Gravedad</label>
-            <select wire:model.defer ="gravedad" class="form-select h-12 text-lg">
-                <option value="">Seleccione…</option>
-                <option>Leve</option>
-                <option>Moderada</option>
-                <option>Grave</option>
-            </select>
-             @error('gravedad')
-                    <x-alert msg="{{ $message  }}" />
-            @enderror
+                <label class="form-label text-base">Gravedad</label>
+                <select wire:model.defer ="gravedad" class="form-select h-12 text-lg">
+                    <option value="">Seleccione…</option>
+                    <option>Leve</option>
+                    <option>Moderada</option>
+                    <option>Grave</option>
+                </select>
+                @error('gravedad')
+                        <x-alert msg="{{ $message  }}" />
+                @enderror
         </div>
 
         {{-- estado --}}
         <div class="col-span-12 md:col-span-3">
-            <label class="form-label text-base">Estado</label>
-            <select wire:model.defer ='estado' class="form-select h-12 text-lg">
-                <option value="">Seleccione…</option>
-                <option>Activa</option>
-                <option>Alta</option>
-                <option>En rehabilitación</option>
-            </select>
-             @error('estado')
-                    <x-alert msg="{{ $message  }}" />
-            @enderror
+                <label class="form-label text-base">Estado</label>
+                <select wire:model.defer ='estado' class="form-select h-12 text-lg">
+                    <option value="">Seleccione…</option>
+                    <option>Activa</option>
+                    <option>Alta</option>
+                    <option>En rehabilitación</option>
+                </select>
+                @error('estado')
+                        <x-alert msg="{{ $message  }}" />
+                @enderror
         </div>
 
         {{-- notas --}}
         <div class="col-span-12 md:col-span-9">
             <label class="form-label text-base">Notas</label>
             <input type="text" wire:model.defer='notas' class="form-control h-12 text-lg" placeholder="Observaciones / indicaciones médicas">
-         @error('notas')
-                    <x-alert msg="{{ $message  }}" />
-         @enderror
+            @error('notas')
+            <x-alert msg="{{ $message  }}" />
+            @enderror
         </div>
 
         <div class="col-span-12 flex justify-end">
-            <button class="btn btn-primary text-lg px-8 py-2.5" wire:click="addLesion">
-                Agregar lesión
-            </button>
-        </div>
+    @if($editModeLesion)
+        <button type="button"
+                class="btn btn-primary text-lg px-8 py-2.5"
+                wire:click.prevent="updateLesion">
+            Actualizar lesión
+        </button>
+        <button type="button"
+                class="btn btn-outline-secondary text-lg px-8 py-2.5 ml-3"
+                wire:click.prevent="resetLesionInputs">
+            Cancelar
+        </button>
+    @else
+        <button type="button"
+                class="btn btn-primary text-lg px-8 py-2.5"
+                wire:click.prevent="addLesion">
+            Agregar lesión
+        </button>
+    @endif
+</div>
+
+
+        
     </div>
 
     {{-- Listado de lesiones registradas (placeholder) --}}
@@ -95,8 +113,16 @@
                     <td class="text-slate-400">{{ $lesion->notas }}</td>
                     <td>
                         <div class="flex gap-2">
-                            <button class="btn btn-outline-primary btn-sm">Editar</button>
-                            <button class="btn btn-outline-danger btn-sm">Eliminar</button>
+                            <button type="button"
+                                    class="btn btn-outline-primary btn-sm"
+                                    wire:click="editLesion({{ $lesion->id }})">
+                                Editar
+                            </button>
+                            <button type="button"
+                                    class="btn btn-outline-danger btn-sm"
+                                    wire:click="deleteLesion({{ $lesion->id }})">
+                                Eliminar
+                            </button>
                         </div>
                     </td>
                 </tr>

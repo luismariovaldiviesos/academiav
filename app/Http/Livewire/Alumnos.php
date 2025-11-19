@@ -42,6 +42,10 @@ class Alumnos extends Component
 
     public $lesiones;
 
+    // Para modo edición de lesión
+    public $lesion_id = null;      // id de la lesión que se edita
+    public $editModeLesion = false; // bandera para cambiar botón de "Agregar" a "Actualizar"
+
 
 
     public  function mount(){
@@ -233,6 +237,18 @@ class Alumnos extends Component
         //dd('llegamos' , $this->lesiones);
     }
 
+    public function resetLesionInputs()
+    {
+        $this->lesion_id = null;
+        $this->fecha = null;
+        $this->lesion = null;
+        $this->parte = null;
+        $this->gravedad = null;
+        $this->estado = null;
+        $this->notas = null;
+        $this->editModeLesion = false;
+    }
+
 
 
     public function addLesion()
@@ -257,15 +273,63 @@ class Alumnos extends Component
                 'notas'     => trim($this->notas) ?: null,
             ]);
              $this->noty('lesion guardada', 'noty', false, 'close-modal');
+            $this->resetLesionInputs();
              $this->cargarLesiones($this->selected_id);
 
          }
          //$this->validate(Lesion::rules(), Lesion::$messages);
 
+    }
 
+    public function deleteLesion(Lesion $lesion)
+    {
+        if(!$lesion){
+             $this->noty('lesion no se encuentra', 'noty', false, 'close-modal');
+             return;}
+        $lesion->delete();       
+        $this->cargarLesiones($this->selected_id);
+         $this->noty('lesion eliminada', 'noty', false);
 
+    }
 
+    public function editLesion(Lesion $lesion)
+    {
+        if(!$lesion){
+             $this->noty('lesion no se encuentra', 'noty', false, 'close-modal');
+             return;}
+        $this->lesion_id = $lesion->id;
+        $this->fecha = Carbon::parse($lesion->fecha)->format('Y-m');
+        $this->lesion = $lesion->lesion;
+        $this->parte = $lesion->parte;
+        $this->gravedad = $lesion->gravedad;
+        $this->estado = $lesion->estado;
+        $this->notas = $lesion->notas;
+        $this->editModeLesion = true;
+         $this->noty('lesion cargada para editar', 'noty', false);
 
+    }
+
+    public  function updateLesion()
+    {
+         $lesion = \App\Models\Lesion::find($this->lesion_id);         
+        if (!$lesion) {
+            $this->dispatch('noty', msg: 'No se encontró la lesión a actualizar.', type: 'error');
+            return;
+        }
+        // Actualizar los campos
+        $lesion->update([
+            'fecha'    => \Carbon\Carbon::createFromFormat('Y-m', $this->fecha)->startOfMonth()->format('Y-m-d'),
+            'lesion'   => trim($this->lesion),
+            'parte'    => trim($this->parte),
+            'gravedad' => $this->gravedad,
+            'estado'   => $this->estado,
+            'notas'    => trim($this->notas),
+        ]);
+
+        $this->resetLesionInputs();
+        // Recargar lista
+        $this->cargarLesiones($this->selected_id);
+        $this->noty('lesión actualizada con exto ', 'noty', false);
     }
 
     public function saveRepresentante()
