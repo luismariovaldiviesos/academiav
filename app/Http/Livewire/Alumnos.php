@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use App\Models\Image;
 use App\Models\Lesion;
+use App\Models\Customer;
 
 
 class Alumnos extends Component
@@ -47,10 +48,23 @@ class Alumnos extends Component
     public $editModeLesion = false; // bandera para cambiar botón de "Agregar" a "Actualizar"
 
 
+    //para representante
+    public $rep_customer_id = null;
+    public $businame;
+    public $typeidenti;
+    public $valueidenti;
+    public $address;
+    public $email;
+    public $phone;
+    public $notes;
+
+
+
 
     public  function mount(){
         if($this->selected_id >0 ){
             $this->cargarLesiones($this->selected_id);
+            $this->loadRepresentante();
         }
     }
 
@@ -332,10 +346,72 @@ class Alumnos extends Component
         $this->noty('lesión actualizada con exto ', 'noty', false);
     }
 
-    public function saveRepresentante()
-    {
-        dd('aquí grabamos REPRESENTANTE');
+    public function loadRepresentante(){
+        //$this->resetRepresentanteInputs();
+        if (!$this->selected_id) return ;
+        $alumno =  Alumno::with('representante')->find($this->selected_id);
+          if ($alumno && $alumno->representante) {
+            $rep = $alumno->representante;
+
+            $this->rep_customer_id = $rep->id;
+
+            $this->businame    = $rep->businame;
+            $this->typeidenti  = $rep->typeidenti;
+            $this->valueidenti = $rep->valueidenti;
+            $this->address     = $rep->address;
+            $this->email       = $rep->email;
+            $this->phone       = $rep->phone;
+            $this->notes       = $rep->notes;
+        }
     }
+
+        public function resetRepresentanteInputs()
+        {
+            $this->rep_customer_id = null;
+            $this->businame = null;
+            $this->typeidenti = null;
+            $this->valueidenti = null;
+            $this->address = null;
+            $this->email = null;
+            $this->phone = null;
+            $this->notes = null;
+        }
+
+   public function saveRepresentante()
+{
+    // Si no hay alumno seleccionado, no tiene sentido guardar representante
+    //dd($this->selected_id);
+    if (!$this->selected_id) {
+        $this->noty('Primero guarda el PERFIL del alumno.', 'noty', true);
+        $this->tab = 'perfil';
+        return;
+    }
+
+    // $this->rep_customer_id puede ser null (nuevo) o >0 (editar)
+    $id = $this->rep_customer_id ?? 0;
+
+    $this->validate(Customer::rules($id), Customer::$messages);
+
+    $rep = Customer::storeFromForm($id, [
+        'businame'    => $this->businame,
+        'typeidenti'  => $this->typeidenti,
+        'valueidenti' => $this->valueidenti,
+        'address'     => $this->address,
+        'email'       => $this->email,
+        'phone'       => $this->phone,
+        'notes'       => $this->notes,
+        'alumno_id'   => $this->selected_id,
+    ]);
+
+    // Guardamos la PK REAL en la variable de edición
+    $this->rep_customer_id = $rep->getKey(); // esto usa id_alumno
+
+    $this->noty('Representante guardado con éxito.', 'noty', false);
+
+    // avanzar al siguiente tab
+    $this->tab = "matri";
+}
+
 
     public function saveMatricula()
     {

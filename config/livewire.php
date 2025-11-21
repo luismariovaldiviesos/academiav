@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'asset_url' => "http://localhost/academiav/public", 
+    'asset_url' => null,
 
     /*
     |--------------------------------------------------------------------------
