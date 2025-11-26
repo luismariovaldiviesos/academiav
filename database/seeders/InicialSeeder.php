@@ -18,17 +18,9 @@ class InicialSeeder extends Seeder
      */
     public function run()
     {
-        $alumno = Alumno::create([
-            'ci' => '0999999999',
-            'nombres' => 'Juan Perez',
-            'fecha_nacimiento' => '2000-01-01',
-            'colegio' => 'Colegio Nacional',
-            'genero' => 'X',
-        ]);
 
-        $customer = Customer::create([
-            'alumno_id' => $alumno->id,
-            'businame' => 'Carlos Perez',
+           $customer = Customer::create([
+           'businame' => 'Carlos Perez',
             'typeidenti' => 'ci',
             'valueidenti' => '0999999999',
             'address' => 'dirección',
@@ -37,6 +29,17 @@ class InicialSeeder extends Seeder
             'phone' => '999999',
             'notes' => 'consumidor final por defecto'
         ]);
+
+        $alumno = Alumno::create([
+            'representante_id' => $customer->id,
+            'ci' => '0999999999',
+            'nombres' => 'Juan Perez',
+            'fecha_nacimiento' => '2000-01-01',
+            'colegio' => 'Colegio Nacional',
+            'genero' => 'X',
+        ]);
+
+     
 
         $fichaDeportiva = FichaDeportiva::create([
             'alumno_id' => $alumno->id,

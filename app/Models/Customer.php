@@ -9,9 +9,9 @@ class Customer extends Model
 {
     use HasFactory;
 
-    // Clave primaria personalizada
-    protected $primaryKey = 'id_alumno';
-    public $incrementing = false;
+    // PK normal
+    protected $primaryKey = 'id';
+    public $incrementing = true;
 
     protected $fillable = [
         'businame',
@@ -21,18 +21,19 @@ class Customer extends Model
         'email',
         'phone',
         'notes',
-        'alumno_id', // muy importante para representante
     ];
 
-    // Relación inversa
-    public function alumno()
+    // Un representante puede estar asociado a varios alumnos
+    public function alumnos()
     {
-        return $this->belongsTo(Alumno::class, 'alumno_id', 'id');
+        return $this->hasMany(Alumno::class, 'representante_id', 'id');
     }
 
-    public static function rules($id)
+    // ----------------- VALIDACIÓN -----------------
+
+    public static function rules($id = 0)
     {
-        // Nuevo registro (id <= 0 ó null)
+        // NUEVO
         if ($id <= 0 || $id === null) {
             return [
                 'businame'    => 'required|min:3|unique:customers,businame',
@@ -44,13 +45,13 @@ class Customer extends Model
             ];
         }
 
-        // Edición: IGNORAR el registro actual usando id_alumno
+        // EDICIÓN: ignorar el registro cuyo PK = $id
         return [
-            'businame'    => "required|min:3|string|unique:customers,businame,{$id},id_alumno",
+            'businame'    => "required|min:3|unique:customers,businame,{$id},id",
             'typeidenti'  => 'required',
-            'valueidenti' => "required|max:13|unique:customers,valueidenti,{$id},id_alumno",
+            'valueidenti' => "required|max:13|unique:customers,valueidenti,{$id},id",
             'address'     => 'required',
-            'email'       => "required|email|unique:customers,email,{$id},id_alumno",
+            'email'       => "required|email|unique:customers,email,{$id},id",
             'phone'       => 'required',
         ];
     }
@@ -58,45 +59,20 @@ class Customer extends Model
     public static $messages = [
         'businame.required' => 'nombre requerido',
         'businame.min'      => 'nombre debe tener al menos 3 caracteres',
-        'businame.unique'   => 'nombre ya esta en uso',
+        'businame.unique'   => 'nombre ya está en uso',
 
         'typeidenti.required' => 'tipo requerido',
 
         'valueidenti.required' => 'valor requerido',
-        'valueidenti.max'      => 'valor debe tener maximo 13 caracteres',
-        'valueidenti.unique'   => 'valor ya esta en uso',
+        'valueidenti.max'      => 'valor debe tener máximo 13 caracteres',
+        'valueidenti.unique'   => 'documento ya está en uso',
 
-        'address.required' => 'direccion es requerida',
+        'address.required' => 'dirección requerida',
 
         'email.required' => 'email es requerido',
         'email.email'    => 'email no es válido',
-        'email.unique'   => 'email ya esta en uso',
+        'email.unique'   => 'email ya está en uso',
 
-        'phone.required' => 'teléfono es requerido',
+        'phone.required' => 'teléfono requerido',
     ];
-
-    /**
-     * Guardar o actualizar un customer usando la PK real (id_alumno),
-     * sin usar la columna "id" en ningún momento.
-     */
-    public static function storeFromForm($key, array $data): self
-    {
-        // Si viene clave (editar)
-        if (!empty($key)) {
-            $model = static::find($key); // buscar por id_alumno
-
-            if ($model) {
-                $model->fill($data);
-                $model->save();
-                return $model;
-            }
-        }
-
-        // Si no hay clave, o no se encontró → crear nuevo
-        $model = new static();
-        $model->fill($data);
-        $model->save();
-
-        return $model;
-    }
 }

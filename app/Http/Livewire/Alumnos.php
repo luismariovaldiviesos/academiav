@@ -49,7 +49,7 @@ class Alumnos extends Component
 
 
     //para representante
-    public $rep_customer_id = null;
+   public $rep_id = null;  // id en customers (representante actual)
     public $businame;
     public $typeidenti;
     public $valueidenti;
@@ -135,6 +135,7 @@ class Alumnos extends Component
         $this->academia_anterior = $alumno->fichaDeportiva?->academia_anterior;
         $this->años_practica = $alumno->fichaDeportiva?->años_practica;
         $this->cargarLesiones($alumno->id);;
+        $this->loadRepresentante();
 
         $this->action = 'Editar';
         $this->form = true;
@@ -346,15 +347,27 @@ class Alumnos extends Component
         $this->noty('lesión actualizada con exto ', 'noty', false);
     }
 
-    public function loadRepresentante(){
-        //$this->resetRepresentanteInputs();
-        if (!$this->selected_id) return ;
-        $alumno =  Alumno::with('representante')->find($this->selected_id);
-          if ($alumno && $alumno->representante) {
+    public function loadRepresentante()
+    {
+        // limpiar primero
+        $this->rep_id      = null;
+        $this->businame    = null;
+        $this->typeidenti  = null;
+        $this->valueidenti = null;
+        $this->address     = null;
+        $this->email       = null;
+        $this->phone       = null;
+        $this->notes       = null;
+
+        if (!$this->selected_id) {
+        return;
+        }
+
+          $alumno = \App\Models\Alumno::with('representante')->find($this->selected_id);
+        if ($alumno && $alumno->representante) {
+                
             $rep = $alumno->representante;
-
-            $this->rep_customer_id = $rep->id;
-
+            $this->rep_id      = $rep->id;
             $this->businame    = $rep->businame;
             $this->typeidenti  = $rep->typeidenti;
             $this->valueidenti = $rep->valueidenti;
@@ -362,12 +375,12 @@ class Alumnos extends Component
             $this->email       = $rep->email;
             $this->phone       = $rep->phone;
             $this->notes       = $rep->notes;
-        }
+            }
     }
 
         public function resetRepresentanteInputs()
         {
-            $this->rep_customer_id = null;
+            $this->rep_id = null;
             $this->businame = null;
             $this->typeidenti = null;
             $this->valueidenti = null;
@@ -377,40 +390,57 @@ class Alumnos extends Component
             $this->notes = null;
         }
 
-   public function saveRepresentante()
-{
-    // Si no hay alumno seleccionado, no tiene sentido guardar representante
-    //dd($this->selected_id);
-    if (!$this->selected_id) {
-        $this->noty('Primero guarda el PERFIL del alumno.', 'noty', true);
-        $this->tab = 'perfil';
-        return;
+    public function saveRepresentante()
+    {
+        if (!$this->selected_id) {
+            $this->noty('Primero guarda las lesiones del alumno.', 'noty', true);
+            $this->tab = 'lesiones';
+            return;
+        }
+
+        $id = $this->rep_id ?? 0; // 0 = nuevo; >0 = editar
+
+        // Validación según Customer
+        $this->validate(Customer::rules($id), Customer::$messages);
+
+        // Si ya hay representante, actualizamos; si no, creamos uno nuevo
+        if ($this->rep_id) {
+            $rep = Customer::findOrFail($this->rep_id);
+            $rep->update([
+                'businame'    => $this->businame,
+                'typeidenti'  => $this->typeidenti,
+                'valueidenti' => $this->valueidenti,
+                'address'     => $this->address,
+                'email'       => $this->email,
+                'phone'       => $this->phone,
+                'notes'       => $this->notes,
+            ]);
+        } else {
+            $rep = Customer::create([
+                'businame'    => $this->businame,
+                'typeidenti'  => $this->typeidenti,
+                'valueidenti' => $this->valueidenti,
+                'address'     => $this->address,
+                'email'       => $this->email,
+                'phone'       => $this->phone,
+                'notes'       => $this->notes,
+            ]);
+        }
+
+        // Vincular al alumno (representante_id en alumnos)
+        $alumno = \App\Models\Alumno::findOrFail($this->selected_id);
+        $alumno->representante_id = $rep->id;
+        $alumno->save();
+
+        // Guardamos el id para próximas ediciones
+        $this->rep_id = $rep->id;
+
+        $this->noty('Representante guardado con éxito.', 'noty', false);
+
+        // avanzar a matrícula
+        $this->tab = 'matri';
     }
 
-    // $this->rep_customer_id puede ser null (nuevo) o >0 (editar)
-    $id = $this->rep_customer_id ?? 0;
-
-    $this->validate(Customer::rules($id), Customer::$messages);
-
-    $rep = Customer::storeFromForm($id, [
-        'businame'    => $this->businame,
-        'typeidenti'  => $this->typeidenti,
-        'valueidenti' => $this->valueidenti,
-        'address'     => $this->address,
-        'email'       => $this->email,
-        'phone'       => $this->phone,
-        'notes'       => $this->notes,
-        'alumno_id'   => $this->selected_id,
-    ]);
-
-    // Guardamos la PK REAL en la variable de edición
-    $this->rep_customer_id = $rep->getKey(); // esto usa id_alumno
-
-    $this->noty('Representante guardado con éxito.', 'noty', false);
-
-    // avanzar al siguiente tab
-    $this->tab = "matri";
-}
 
 
     public function saveMatricula()

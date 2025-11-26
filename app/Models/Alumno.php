@@ -52,9 +52,9 @@ class Alumno extends Model
 
 
   // Relación uno a uno con Representante
-    public function representante()
+   public function representante()
     {
-        return $this->hasOne(Customer::class, 'alumno_id', 'id');
+        return $this->belongsTo(Customer::class, 'representante_id', 'id');
     }
 
     public function image()

@@ -24,9 +24,9 @@
     <div class="col-span-12 md:col-span-3">
         <label class="form-label text-base">CI / RUC</label>
         <input type="text"  wire:model.defer="valueidenti" class="form-control h-12 text-lg" placeholder="Número de documento">
-           @error('notes')
+           @error('valueidenti')
         <x-alert msg="{{ $message }}" />
-    @enderror
+        @enderror
     </div>
 
     <div class="col-span-12">
