@@ -347,6 +347,50 @@ class Alumnos extends Component
         $this->noty('lesión actualizada con exto ', 'noty', false);
     }
 
+    //para cargar si hay representante
+    public function updatedValueIdenti($value){
+
+        // Si borra la cédula, reseteamos el contexto de representante
+        if (!$value) {
+            $this->rep_id   = null;
+            $this->businame = null;
+            $this->typeidenti = null;
+            $this->address  = null;
+            $this->email    = null;
+            $this->phone    = null;
+            $this->notes    = null;
+            return;
+        }
+
+         // Buscar representante por número de documento
+         $rep = Customer::where('valueidenti', $value)->first();
+         if ($rep) {
+             // Cargar datos en los campos
+             $this->rep_id      = $rep->id;
+             $this->businame    = $rep->businame;
+             $this->typeidenti  = $rep->typeidenti;
+             $this->address     = $rep->address;
+             $this->email       = $rep->email;
+             $this->phone       = $rep->phone;
+             $this->notes       = $rep->notes;
+             // Opcional: notificación amigable
+            $this->noty('Representante encontrado y cargado.', 'noty', false);
+         } else {
+             // No existe: será un representante nuevo con esta cédula
+            $this->rep_id = null;
+            // Dejamos el resto de campos en blanco para que los llene el usuario
+            $this->businame   = null;
+            $this->typeidenti = null;
+            $this->address    = null;
+            $this->email      = null;
+            $this->phone      = null;
+            $this->notes      = null;
+
+            $this->noty('No existe representante con esa cédula. Se registrará uno nuevo.', 'noty', false);
+         }
+
+    }
+
     public function loadRepresentante()
     {
         // limpiar primero
