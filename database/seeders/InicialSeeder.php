@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Customer;
 use App\Models\Setting;
 use App\Models\Alumno;
+use App\Models\Categoria;
 use App\Models\FichaDeportiva;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -52,6 +53,24 @@ class InicialSeeder extends Seeder
             'academia_anterior' => 'Escuela de Fútbol Local',
             'años_practica' => 5,
         ]);
+
+
+        $categoria =  Categoria::create([
+            'nombre' => 'Categoria Inicial',
+            'descripcion' => 'Para niños de 4 a 6 años',
+            'edad_minima' => 4,
+            'edad_maxima' => 6,
+            'costo_mensual' => 50.00,
+            ]);
+
+             $categoria =  Categoria::create([
+            'nombre' => 'Categoria segunda',
+            'descripcion' => 'Para niños de 6 a 8 años',
+            'edad_minima' => 6,
+            'edad_maxima' => 8,
+            'costo_mensual' => 50.00,
+            ]);
+
 
 
 

@@ -3,7 +3,7 @@
 use App\Http\Livewire\Arqueos;
 use App\Http\Livewire\Asignar;
 use App\Http\Livewire\Cajas;
-use App\Http\Livewire\Categories;
+use App\Http\Livewire\Categorias;
 use App\Http\Livewire\Customers;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\Descuentos;
@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
 
-    // Route::get('categories', Categories::class)->name('categories');
+     Route::get('categorias', Categorias::class)->name('categorias');
     // Route::get('products', Products::class)->name('products');
     Route::get('customers', Customers::class)->name('customers');
     Route::get('users', Users::class)->name('users');

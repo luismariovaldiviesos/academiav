@@ -12,41 +12,20 @@
                 <div class="mt-3">
                     <div class="sm:grid grid-cols-2 gap-5">
                         <div>
-                            <label  class="form-label">Nombre-Razón Social</label>
-                            <input wire:model='businame' id="businame" type="text" class="form-control form-control-lg border-start-0 kioskboard" maxlength="250">
-                            @error('businame')
+                            <label  class="form-label">NOMBRE</label>
+                            <input wire:model='nombre' id="nombre" type="text" class="form-control form-control-lg border-start-0 kioskboard" maxlength="250">
+                            @error('nombre')
                                 <x-alert msg="{{ $message }}" />
                             @enderror
-                        </div>
+                        </div>                     
 
                         <div>
-                            <label  class="form-label">Tipo</label>
-                            <select wire:model='typeidenti' id="typeidenti" class="form-control form-control-lg border-start-0 kioskboard">
-                                <option selected>Elegir</option>
-                                 <option value="ci">ci</option>
-                                <option value="ruc">ruc</option>
-
-                            </select>
-                            @error('businame')
+                            <label  class="form-label">DESCRIPCION</label>
+                            <input wire:model='descripcion' id="descripcion" type="text" data-kioskboard-type="numpad" class="form-control form-control-lg border-start-0 kioskboard" maxlength="13">
+                            @error('descripcion')
                                 <x-alert msg="{{ $message }}" />
                             @enderror
-                        </div>
-
-                        <div>
-                            <label  class="form-label">CI-RUC</label>
-                            <input wire:model='valueidenti' id="valueidenti" type="text" data-kioskboard-type="numpad" class="form-control form-control-lg border-start-0 kioskboard" maxlength="13">
-                            @error('valueidenti')
-                                <x-alert msg="{{ $message }}" />
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label  class="form-label">Dirección</label>
-                            <input wire:model='address' id="address" type="text" class="form-control form-control-lg border-start-0 kioskboard" maxlength="250">
-                            @error('address')
-                                <x-alert msg="{{ $message }}" />
-                            @enderror
-                        </div>
+                        </div> 
 
                     </div>
 
@@ -55,25 +34,25 @@
                 <div class="mt-3">
                     <div class="sm:grid grid-cols-3 gap-5">
                         <div>
-                            <label  class="form-label">Email</label>
-                            <input wire:model='email' id="email" type="text" class="form-control form-control-lg border-start-0 kioskboard" maxlength="250">
-                            @error('email')
+                            <label  class="form-label">EDAD MÍNIMA</label>
+                            <input wire:model='edad_minima' id="edad_minima" type="number" class="form-control form-control-lg border-start-0 kioskboard" maxlength="250">
+                            @error('edad_minima')
                                 <x-alert msg="{{ $message }}" />
                             @enderror
                         </div>
 
                         <div>
-                            <label  class="form-label">Teléfono</label>
-                            <input wire:model='phone' id="phone" type="text" data-kioskboard-type="numpad" class="form-control form-control-lg border-start-0 kioskboard" maxlength="250">
-                            @error('phone')
+                            <label  class="form-label">EDAD MÁXIMA</label>
+                            <input wire:model='edad_maxima' id="edad_maxima" type="number" data-kioskboard-type="numpad" class="form-control form-control-lg border-start-0 kioskboard" maxlength="250">
+                            @error('edad_maxima')
                                 <x-alert msg="{{ $message }}" />
                             @enderror
                         </div>
 
                         <div>
-                            <label  class="form-label">Notas</label>
-                            <input wire:model='notes' id="notes" type="text" class="form-control form-control-lg border-start-0 kioskboard" maxlength="250">
-                            @error('notes')
+                            <label  class="form-label">COSTO MENSUAL </label>
+                            <input wire:model='costo_mensual' id="costo_mensual" type="number" class="form-control form-control-lg border-start-0 kioskboard" maxlength="250">
+                            @error('costo_mensual')
                                 <x-alert msg="{{ $message }}" />
                             @enderror
                         </div>

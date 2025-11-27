@@ -104,6 +104,13 @@
 
             <ul class="">
 
+                  <li>
+                    <a href="{{ route('categorias') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-feather="settings"></i> </div>
+                        <div class="side-menu__title"> CATEGORIAS  </div>
+                    </a>
+                </li>
+
                 <li>
                     <a href="{{ route('settings') }}" class="side-menu">
                         <div class="side-menu__icon"> <i data-feather="settings"></i> </div>

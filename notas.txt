@@ -7,6 +7,15 @@ se encesita cargar en foto la fpot del usuario en perfil para que no pida
 cargar la misma foto si se esta actualizando. 
 O sea si actulizo algu,n dato del usuario me pide si o si foto 
 
+26-11-2025
+validar una vez que se haya guardado matricula (ahi se asigna estuduante a la categoria)
+que no se pueda eliminar categorias 
+
+
+TODO:
+hay que seguir con tabla entrenador y su pivote categoria_entrenador
+lego seguimos con matricula 
+
 
 
 
