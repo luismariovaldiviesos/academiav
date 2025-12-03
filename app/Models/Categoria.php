@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Entrenador;
 class Categoria extends Model
 {
      use HasFactory;
@@ -60,4 +60,11 @@ class Categoria extends Model
 
         'descripcion.max' => 'La descripción debe tener máximo 255 caracteres',
     ];
+
+    public function entrenadores()
+    {
+        return $this->belongsToMany(Entrenador::class, 'categoria_entrenador', 'categoria_id', 'entrenador_id')->withTimestamps();      
+
+    }
+
 }

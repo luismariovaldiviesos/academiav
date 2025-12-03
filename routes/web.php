@@ -2,11 +2,11 @@
 
 use App\Http\Livewire\Arqueos;
 use App\Http\Livewire\Asignar;
-use App\Http\Livewire\Cajas;
+use App\Http\Livewire\Entrenadores;
 use App\Http\Livewire\Categorias;
 use App\Http\Livewire\Customers;
 use App\Http\Livewire\Dashboard;
-use App\Http\Livewire\Descuentos;
+
 use App\Http\Livewire\Diario;
 use App\Http\Livewire\Impuestos;
 use App\Http\Livewire\Permisos;
@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth'])->group(function () {
 
      Route::get('categorias', Categorias::class)->name('categorias');
-    // Route::get('products', Products::class)->name('products');
+    Route::get('entrenadores', Entrenadores::class)->name('entrenadores');
     Route::get('customers', Customers::class)->name('customers');
     Route::get('users', Users::class)->name('users');
      Route::get('alumnos', Alumnos::class)->name('alumnos');

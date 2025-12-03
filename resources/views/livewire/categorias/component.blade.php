@@ -87,7 +87,7 @@
         </div>
     @else
 
-        @include('livewire.customers.form')
+        @include('livewire.categorias.form')
 
     @endif
 

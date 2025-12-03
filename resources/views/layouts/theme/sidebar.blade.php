@@ -64,6 +64,13 @@
             </a>
         </li>
 
+           <li>
+            <a href="{{ route('entrenadores') }}" class="side-menu">
+                <div class="side-menu__icon"> <i data-feather="users"></i> </div>
+                <div class="side-menu__title">  ENTRENADORES  </div>
+            </a>
+        </li>
+
 
 
 

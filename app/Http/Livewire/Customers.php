@@ -10,9 +10,9 @@ class Customers extends Component
 {
     use WithPagination;
 
-    public $businame = "", $typeidenti ="", $valueidenti ="",$address ="",$email ="",$phone ="", $notes='', $selected_id =0;
+    public $businame = "", $typeidenti ="", $valueidenti ="",$address ="",$email ="",$phone ="", $notes='';
 
-    public $action = 'Listado', $componentName = 'CLIENTES', $search = '', $form = false;
+    public $action = 'Listado', $componentName = 'CLIENTES', $search = '', $form = false,  $selected_id =0;
     private $pagination =10;
     protected $paginationTheme = 'tailwind';
 
@@ -36,6 +36,8 @@ class Customers extends Component
 
         ])->layout('layouts.theme.app');
     }
+    //*************SIEMPRE VA *************** */
+     public $listeners = ['resetUI', 'Destroy'];
 
     public function noty($msg, $eventName = 'noty', $reset = true, $action =""){
         $this->dispatchBrowserEvent($eventName, ['msg'=>$msg, 'type' => 'success', 'action' => $action ]);
@@ -62,6 +64,8 @@ class Customers extends Component
         $this->reset('businame','typeidenti','valueidenti','address','email','phone','notes','selected_id','search','form');
     }
 
+    //************* FIN  SIEMPRE VA  CAMBIAR VARIABLES DEL RESET *************** */
+
     public function Edit(Customer $customer){
 
         $this->selected_id = $customer->id;
@@ -76,7 +80,7 @@ class Customers extends Component
 
     }
 
-    public $listeners = ['resetUI', 'Destroy'];
+   
 
     public function Store()
     {

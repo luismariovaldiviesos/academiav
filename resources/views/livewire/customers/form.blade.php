@@ -1,112 +1,69 @@
-<div class="intro-y col-span-12">
-    <div class="intro-y box">
-        <div class="flex flex-col sm:flex-row items-center p-5 border-b border-gray-200 dark:border-dark-5">
-            <h2 class="font-medium text-base mr-auto">
-                {{ $componentName  }} | <span class="font-normal">{{ $action }}</span>
-            </h2>
-        </div>
-
-        <div class="p-5 ">
-            <div class="preview">
-
-                <div class="mt-3">
-                    <div class="sm:grid grid-cols-2 gap-5">
-                        <div>
-                            <label  class="form-label">NOMBRE</label>
-                            <input wire:model='nombre' id="nombre" type="text" class="form-control form-control-lg border-start-0 kioskboard" maxlength="250">
-                            @error('nombre')
-                                <x-alert msg="{{ $message }}" />
-                            @enderror
-                        </div>                     
-
-                        <div>
-                            <label  class="form-label">DESCRIPCION</label>
-                            <input wire:model='descripcion' id="descripcion" type="text" data-kioskboard-type="numpad" class="form-control form-control-lg border-start-0 kioskboard" maxlength="13">
-                            @error('descripcion')
-                                <x-alert msg="{{ $message }}" />
-                            @enderror
-                        </div> 
-
-                    </div>
-
-                </div>
-
-                <div class="mt-3">
-                    <div class="sm:grid grid-cols-3 gap-5">
-                        <div>
-                            <label  class="form-label">EDAD MÍNIMA</label>
-                            <input wire:model='edad_minima' id="edad_minima" type="number" class="form-control form-control-lg border-start-0 kioskboard" maxlength="250">
-                            @error('edad_minima')
-                                <x-alert msg="{{ $message }}" />
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label  class="form-label">EDAD MÁXIMA</label>
-                            <input wire:model='edad_maxima' id="edad_maxima" type="number" data-kioskboard-type="numpad" class="form-control form-control-lg border-start-0 kioskboard" maxlength="250">
-                            @error('edad_maxima')
-                                <x-alert msg="{{ $message }}" />
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label  class="form-label">COSTO MENSUAL </label>
-                            <input wire:model='costo_mensual' id="costo_mensual" type="number" class="form-control form-control-lg border-start-0 kioskboard" maxlength="250">
-                            @error('costo_mensual')
-                                <x-alert msg="{{ $message }}" />
-                            @enderror
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="mt-5">
-                    <x-back />
-
-                    <x-save />
-                </div>
-
-            </div>
-        </div>
-
+<div class="p-8 grid grid-cols-12 gap-6">
+    {{-- nombre, tipo documento, ci-ruc, direccion, email, telefono, notas --}}
+    <div class="col-span-12 md:col-span-6">
+        <label class="form-label text-base">Nombre del representante</label>
+        <input type="text"  wire:model.defer="businame" class="form-control h-12 text-lg" placeholder="Nombre completo">
+          @error('businame')
+                    <x-alert msg="{{ $message  }}" />
+         @enderror
     </div>
 
+    <div class="col-span-12 md:col-span-3">
+        <label class="form-label text-base">Tipo documento</label>
+        <select wire:model.defer="typeidenti" class="form-select h-12 text-lg">
+            <option value="">Seleccione…</option>
+            <option>CI</option>
+            <option>RUC</option>
+            <option>Pasaporte</option>
+        </select>
+        @error('typeidenti')
+                <x-alert msg="{{ $message  }}" />   
+        @enderror
+    </div>
 
-    <script>
+    <div class="col-span-12 md:col-span-3">
+        <label class="form-label text-base">CI / RUC</label>
+        <input type="text"  wire:model.lazy="valueidenti" class="form-control h-12 text-lg" placeholder="Número de documento">
+           @error('valueidenti')
+        <x-alert msg="{{ $message }}" />
+        @enderror
+    </div>
 
-       KioskBoard.run('.kioskboard', {})
+    <div class="col-span-12">
+        <label class="form-label text-base">Dirección</label>
+        <input type="text"  wire:model.defer="address"   class="form-control h-12 text-lg" placeholder="Calle, número, sector">
+        @error('address')
+                <x-alert msg="{{ $message  }}" />
+        @enderror
+    </div>
 
-       document.querySelectorAll(".kioskboard").forEach(i => i.addEventListener("change", e =>{
+    <div class="col-span-12 md:col-span-6">
+        <label class="form-label text-base">Email</label>
+        <input type="email"  wire:model.defer="email"  class="form-control h-12 text-lg" placeholder="correo@ejemplo.com">
+        @error('email')
+                <x-alert msg="{{ $message  }}" />   
+        @enderror
+    </div>
 
-            switch(e.currentTarget.id)
-            {
-                case 'businame':
-                    @this.businame = e.target.value
-                    break
-                case 'valueidenti':
-                    @this.valueidenti = e.target.value
-                    break
-                case 'address':
-                    @this.address = e.target.value
-                    break
-                case 'email':
-                    @this.email = e.target.value
-                    break
-                case 'phone':
-                    @this.phone = e.target.value
-                    brea
-                case 'notes':
-                    @this.notes = e.target.value
-                    break
-            }
+    <div class="col-span-12 md:col-span-6">
+        <label class="form-label text-base">Teléfono</label>
+        <input type="text"  wire:model.defer="phone"  class="form-control h-12 text-lg" placeholder="09xxxxxxxx">
+        @error('phone')
+                <x-alert msg="{{ $message  }}" /> 
+        @enderror
+    </div>
 
-       }))
+    <div class="col-span-12">
+        <label class="form-label text-base">Notas</label>
+        <textarea  wire:model.defer="notes" class="form-control text-lg" rows="3" placeholder="Observaciones"></textarea>
+      @error('notes')
+        <x-alert msg="{{ $message }}" />
+    @enderror
+    </div>
 
-    </script>
-
+    <div class="col-span-12 flex justify-end">
+        <button class="btn btn-primary text-lg px-8 py-2.5" wire:click="saveRepresentante">
+            Guardar
+        </button>
+    </div>
 </div>
-
-
-
-

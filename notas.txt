@@ -13,8 +13,7 @@ que no se pueda eliminar categorias
 
 
 TODO:
-hay que seguir con tabla entrenador y su pivote categoria_entrenador
-lego seguimos con matricula 
+reconfigurar form de customer ver capz en git 
 
 
 
