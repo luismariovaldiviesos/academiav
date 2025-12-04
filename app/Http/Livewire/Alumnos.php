@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\Models\Image;
 use App\Models\Lesion;
 use App\Models\Customer;
+use App\Models\Categoria;
 
 
 class Alumnos extends Component
@@ -59,9 +60,13 @@ class Alumnos extends Component
     public $notes;
 
 
+    //para matricula
+    public $categorias = [];
+
 
 
     public  function mount(){
+        $this->categorias = Categoria::orderBy('nombre', 'asc')->get();
         if($this->selected_id >0 ){
             $this->cargarLesiones($this->selected_id);
             $this->loadRepresentante();

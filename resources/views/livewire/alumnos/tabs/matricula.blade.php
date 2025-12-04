@@ -4,7 +4,7 @@
         <label class="form-label text-base">Categoría</label>
         <select class="form-select h-12 text-lg">
             <option value="">Seleccione…</option>
-            {{-- DATA: @foreach($categorias as $cat) <option value="{{ $cat->id }}">{{ $cat->nombre }}</option> @endforeach --}}
+             DATA: @foreach($categorias as $cat) <option value="{{ $cat->id }}">{{ $cat->nombre }}</option> @endforeach 
         </select>
     </div>
 
